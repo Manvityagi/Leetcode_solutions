@@ -1,1 +1,50 @@
-{}, {1}, {2}, {1, 2}, {3}, {1, 3}, {2, 3}, {1, 2, 3}, {4}, {1, 4}, {2, 4}, {1, 2, 4}, {3, 4}, {1, 3, 4}, {2, 3, 4}, {1, 2, 3, 4}, {5}, {1, 5}, {2, 5}, {1, 2, 5}, {3, 5}, {1, 3, 5}, {2, 3, 5}, {1, 2, 3, 5}, {4, 5}, {1, 4, 5}, {2, 4, 5}, {1, 2, 4, 5}, {3, 4, 5}, {1, 3, 4, 5}, {2, 3, 4, 5}, {1, 2, 3, 4, 5}, {6}, {1, 6}, {2, 6}, {1, 2, 6}, {3, 6}, {1, 3, 6}, {2, 3, 6}, {1, 2, 3, 6}, {4, 6}, {1, 4, 6}, {2, 4, 6}, {1, 2, 4, 6}, {3, 4, 6}, {1, 3, 4, 6}, {2, 3, 4, 6}, {1, 2, 3, 4, 6}, {5, 6}, {1, 5, 6}, {2, 5, 6}, {1, 2, 5, 6}, {3, 5, 6}, {1, 3, 5, 6}, {2, 3, 5, 6}, {1, 2, 3, 5, 6}, {4, 5, 6}, {1, 4, 5, 6}, {2, 4, 5, 6}, {1, 2, 4, 5, 6}, {3, 4, 5, 6}, {1, 3, 4, 5, 6}, {2, 3, 4, 5, 6}, {1, 2, 3, 4, 5, 6}
+
+#include<bits/stdc++.h>
+using namespace std;
+
+bool helper(string A, vector<string> &B){
+    int n = A.size();
+    if (n == 0)
+        return 0;
+    int d = B.size();
+
+    if (d == 0)
+        return 1;
+        
+    unordered_set<string> set;
+
+    int max_word_len = 0;
+    for (auto s : B)
+    {
+        set.insert(s);
+        max_word_len = max(max_word_len, s.size());
+    }
+
+    int i = 0;
+    int len = 1;
+
+    while (i < n && len <= max_word_len)
+    {
+
+        if (set.find(A.substr(i, len)) != set.end())
+        { //found in dict{
+            i = len + i;
+            len = 1;
+        }
+
+        len++;
+    }
+
+    if (len >= max_word_len + 1)
+        return false;
+
+    return true;
+}
+
+int main()
+{
+    string A = "myinterviewtrainer";
+    vector<string> B = {"trainer", "my", "interview"};
+    cout << helper(A,B);
+    return 0;
+}
