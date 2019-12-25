@@ -1,3 +1,4 @@
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/discuss/108870/Most-consistent-ways-of-dealing-with-the-series-of-stock-problems
 class Solution {
     public int maxProfit(int k, int[] prices) {
      if (k >= prices.length >>> 1) {

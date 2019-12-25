@@ -1,28 +1,37 @@
-int maxProfitInf(vector<int> &prices) {
-    int buyin = INT_MAX, profit = 0;
-    for(auto & price : prices) {
-        if(price > buyin) profit += price - buyin;                
-        buyin = price;
+#define ll long long
+class Solution
+{
+public:
+    int quickSolve(vector<int> prices)
+    {
+        int len = prices.size(), profit = 0;
+        for (int i = 1; i < len; i++)
+            // as long as there is a price gap, we gain a profit.
+            if (prices[i] > prices[i - 1])
+                profit += prices[i] - prices[i - 1];
+        return profit;
     }
-    return profit;
-}
 
-int maxProfit(int k, vector<int> &prices) {
-    if(k == 0 || prices.empty()) return 0;
-    // Max profit by k transaction from 0 to i
-    const int n = prices.size();        
-    if(k >= n / 2) return maxProfitInf(prices);
+    int maxProfit(int k, vector<int> &prices)
+    {
 
-    // balance - the balance with at most j transactions with item 0 to i
-    // profit - the profit with at most j transactions with item 0 to i
-    vector<int> balance(k + 1, INT_MIN), profit(k + 1);
-    
-    for(int i = 0; i < n; ++i) {
-        for(int j = 1; j <= k; ++j) {
-            balance[j] = max(profit[j - 1] - prices[i], balance[j]); // whether to buy at prices[i]
-            profit[j] = max(balance[j] + prices[i], profit[j]); // whether to sell at prices[i]
+        ll n = prices.size();
+        if (n == 0)
+            return 0;
+        if (k >= n / 2)
+            return quickSolve(prices);
+
+        vector<vector<ll>> dp(k + 1, vector<ll>(n));
+
+        for (ll K = 1; K <= k; K++)
+        {
+            ll minprice = prices[0];
+            for (ll i = 1; i < n; i++)
+            {
+                minprice = min(minprice, prices[i] - dp[K - 1][i - 1]);
+                dp[K][i] = max(dp[K][i - 1], prices[i] - minprice);
+            }
         }
+        return dp[k][n - 1];
     }
-    
-    return profit[k];
-}
+};
