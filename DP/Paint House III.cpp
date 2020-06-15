@@ -1,3 +1,4 @@
+#include<bits/stdc++.h>
 class Solution {
 public:
     const int inf = 1e7;
