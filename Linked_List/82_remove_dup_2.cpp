@@ -3,7 +3,9 @@
  * struct ListNode {
  *     int val;
  *     ListNode *next;
- *     ListNode(int x) : val(x), next(NULL) {}
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
 class Solution {
@@ -11,30 +13,32 @@ public:
     ListNode* deleteDuplicates(ListNode* head) {
         if(!head || !(head->next)) return head;
         
-        ListNode* dummy = new ListNode(0);
-        dummy->next = head;
-        ListNode *pp = dummy, *p = head, *c = head->next;
+        ListNode* dummyhead = new ListNode(0);
         
-        while(c != NULL){
-            int flag = 0;
-            
-            while(c != NULL && p->val == c->val){
-                c = c->next;
+    
+        ListNode* curr = head;
+        ListNode* next = curr->next;
+        dummyhead->next = curr;
+        ListNode* prev = dummyhead;
+        
+        while(next)
+        {
+            bool flag = 0;
+            while(curr && next && curr->val == next->val)
+            {
                 flag = 1;
+                curr = next;
+                next = next->next;
             }
-            
-            if(flag){
-                pp->next = c;
-                p = c;
-                if(c)
-                    c = c->next;
-            }else{
-                pp = p;
-                p = c;
-                c = c->next;
-            }
+            if(flag)
+                prev->next = next;
+            else
+                prev = curr;
+            curr = next;
+            if(next)
+            next = next->next;
         }
         
-        return dummy->next;
+       return dummyhead->next;  
     }
 };
