@@ -1,0 +1,1 @@
+#define LL long long
